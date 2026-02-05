@@ -1,27 +1,72 @@
-import { Link } from "@tanstack/react-router";
+import { Minus, Square, X, Activity, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { useSearch } from "@/contexts/search-context";
 
-import { ModeToggle } from "./mode-toggle";
-
-export default function Header() {
-  const links = [{ to: "/", label: "Home" }] as const;
+export function SiteHeader() {
+  const appWindow = getCurrentWindow();
+  const { searchQuery, setSearchQuery } = useSearch();
 
   return (
-    <div>
-      <div className="flex flex-row items-center justify-between px-2 py-1">
-        <nav className="flex gap-4 text-lg">
-          {links.map(({ to, label }) => {
-            return (
-              <Link key={to} to={to}>
-                {label}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="flex items-center gap-2">
-          <ModeToggle />
+    <header
+      className="sticky top-0 z-50 w-full bg-surface/70"
+      data-tauri-drag-region
+    >
+      <div
+        className="flex h-10 items-center justify-between pl-3 pr-0"
+        data-tauri-drag-region
+      >
+        <div
+          className="flex items-center gap-3 min-w-[140px]"
+          data-tauri-drag-region
+        >
+          <Activity className="h-4 w-4 text-primary" />
+          <span className="text-xs font-medium text-foreground">
+            Task Manager
+          </span>
+        </div>
+
+        <div className="flex-1 flex justify-center max-w-md mx-4">
+          <div className="relative w-full">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-7 w-full pl-8 pr-3 text-xs bg-background/50 border-border-subtle rounded-md focus-visible:ring-1 focus-visible:ring-primary"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center ml-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-10 w-12 rounded-none  light:hover:bg-muted text-muted-foreground hover:text-foreground"
+            onClick={() => appWindow.minimize()}
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-10 rounded-none hover:bg-surface-hover text-muted-foreground hover:text-foreground"
+            onClick={() => appWindow.toggleMaximize()}
+          >
+            <Square className="h-2 w-2" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-10 w-12 rounded-none hover:bg-red-600! hover:text-foreground text-muted-foreground"
+            onClick={() => appWindow.close()}
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
       </div>
-      <hr />
-    </div>
+    </header>
   );
 }

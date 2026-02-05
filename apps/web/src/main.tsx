@@ -19,6 +19,26 @@ declare module "@tanstack/react-router" {
 
 const rootElement = document.getElementById("app");
 
+const savedSettings = localStorage.getItem("taskManagerSettings");
+if (savedSettings) {
+  try {
+    const { theme } = JSON.parse(savedSettings);
+    document.documentElement.classList.remove("light", "dark");
+    if (theme === "system") {
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      document.documentElement.classList.add(prefersDark ? "dark" : "light");
+    } else {
+      document.documentElement.classList.add(theme);
+    }
+  } catch (e) {
+    console.error("Failed to initialize theme:", e);
+  }
+} else {
+  document.documentElement.classList.add("dark");
+}
+
 if (!rootElement) {
   throw new Error("Root element not found");
 }
