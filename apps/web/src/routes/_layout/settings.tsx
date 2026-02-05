@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Settings, Palette, Bell, Info, Power } from "lucide-react";
+import { Settings, Palette, Bell, Info, Download } from "lucide-react";
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -11,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTheme } from "@/components/theme-provider";
+import { UpdateDialog } from "@/components/update-dialog";
 
 export const Route = createFileRoute("/_layout/settings")({
   component: SettingsPage,
@@ -41,6 +43,7 @@ function SettingsPage() {
       ? { ...defaultSettings, ...JSON.parse(saved) }
       : defaultSettings;
   });
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
   const saveSettings = (newSettings: AppSettings) => {
     setSettings(newSettings);
@@ -285,6 +288,27 @@ function SettingsPage() {
               </SettingCard>
             </div>
           </section>
+          <section>
+            <h2 className="text-[15px] font-medium text-foreground mb-3 flex items-center gap-2">
+              <Download className="h-4 w-4 text-foreground" />
+              Updates
+            </h2>
+            <div className="space-y-2">
+              <SettingCard
+                title="Check for updates"
+                description="Check if a new version is available on GitHub"
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setUpdateDialogOpen(true)}
+                  className="h-8 text-[13px]"
+                >
+                  Check Now
+                </Button>
+              </SettingCard>
+            </div>
+          </section>
 
           <section>
             <h2 className="text-[15px] font-medium text-foreground mb-3 flex items-center gap-2">
@@ -296,7 +320,7 @@ function SettingsPage() {
                 Task Manager
               </p>
               <p className="text-[12px] text-muted-foreground mt-1">
-                Version 1.0.0
+                Version 0.1.0
               </p>
               <p className="text-[13px] text-muted-foreground mt-3 leading-relaxed">
                 A modern task manager built with Tauri, React, and Rust.
@@ -305,6 +329,11 @@ function SettingsPage() {
           </section>
         </div>
       </div>
+
+      <UpdateDialog
+        open={updateDialogOpen}
+        onOpenChange={setUpdateDialogOpen}
+      />
     </div>
   );
 }

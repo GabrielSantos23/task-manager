@@ -1,12 +1,15 @@
-import { Minus, Square, X, Activity, Search } from "lucide-react";
+import { Minus, Square, X, Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useSearch } from "@/contexts/search-context";
+import { useState } from "react";
+import { UpdateDialog } from "@/components/update-dialog";
 
 export function SiteHeader() {
   const appWindow = getCurrentWindow();
   const { searchQuery, setSearchQuery } = useSearch();
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
   return (
     <header
@@ -21,7 +24,7 @@ export function SiteHeader() {
           className="flex items-center gap-3 min-w-[140px]"
           data-tauri-drag-region
         >
-          <Activity className="h-4 w-4 text-primary" />
+          <img src="/logo.svg" className="h-4 w-4 rounded-sm" alt="Logo" />
           <span className="text-xs font-medium text-foreground">
             Task Manager
           </span>
@@ -41,6 +44,15 @@ export function SiteHeader() {
         </div>
 
         <div className="flex items-center ml-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-10 w-10 rounded-none hover:bg-surface-hover text-muted-foreground hover:text-foreground"
+            onClick={() => setUpdateDialogOpen(true)}
+            title="Check for updates"
+          >
+            <Download className="h-4 w-4" />
+          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -67,6 +79,11 @@ export function SiteHeader() {
           </Button>
         </div>
       </div>
+
+      <UpdateDialog
+        open={updateDialogOpen}
+        onOpenChange={setUpdateDialogOpen}
+      />
     </header>
   );
 }
