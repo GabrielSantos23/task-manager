@@ -40,7 +40,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEEzOEM3RTFCOEU3Njc4RkEKUldUNmVIYU9HMzZNbzlNT09JaENXa1Bram9pSFRDQjVYeVM1SmtBR2lUenpOajBneXdZRVlaTm0K",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQxMjA1Q0Q4QzQ4MjY1OUQKUldTZFpZTEUyRndnMFZNamxTVWljYy9oSXU2MEpQSVlLSlNPRENEK1c2Q1pjME9VVW04RTdJeGcK",
       "endpoints": [
         "https://github.com/GabrielSantos23/task-manager/releases/latest/download/latest.json"
       ]
